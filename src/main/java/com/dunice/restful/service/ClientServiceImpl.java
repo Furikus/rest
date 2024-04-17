@@ -4,6 +4,7 @@ import com.dunice.restful.dto.ClientDto;
 import com.dunice.restful.model.Client;
 
 import com.dunice.restful.repository.ClientRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,16 +42,18 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto read(int id) {
-        var OptClient = clientRepository.findById(id);
-        if (OptClient.isPresent()) {
-            var client = OptClient.get();
-            return ClientDto.builder()
-                    .name(client.getName())
-                    .email(client.getEmail())
-                    .phone(client.getPhone())
-                    .build();
-        }
-        return ClientDto.builder().build();
+        var client = clientRepository.findById(id).orElseThrow(() ->new EntityNotFoundException("client not found"));
+        return ClientDto.builder()
+                .name(client.getName())
+                .email(client.getEmail())
+                .phone(client.getPhone())
+                .build();
+//        var OptClient = clientRepository.findById(id);
+//        if (OptClient.isPresent()) {
+//            var client = OptClient.get();
+//
+//        }
+//        return ClientDto.builder().build();
     }
 
     @Override

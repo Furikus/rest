@@ -3,22 +3,25 @@ package com.dunice.restful.controller;
 import com.dunice.restful.dto.ClientDto;
 import com.dunice.restful.model.Client;
 import com.dunice.restful.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class Controller {
 
     private final ClientService clientService;
 
     @PostMapping(value = "/clients")
-    public ResponseEntity<?> create(@RequestBody ClientDto client) {
+    public ResponseEntity<?> create(@RequestBody @Valid ClientDto client) {
         clientService.create(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -33,7 +36,7 @@ public class Controller {
     }
 
     @GetMapping(value = "/clients/{id}")
-    public ResponseEntity<?> read(@PathVariable(name = "id") int id) {
+    public ResponseEntity<?> read(@PathVariable @Valid int id) {
         final ClientDto clientdto = clientService.read(id);
 
         return clientdto != null
@@ -42,7 +45,8 @@ public class Controller {
     }
 
     @PutMapping(value = "/clients/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody ClientDto client) {
+
+    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody @Valid ClientDto client) {
         final boolean updated = clientService.update(client, id);
 
         return updated
