@@ -38,6 +38,7 @@ public class ClientServiceImpl implements ClientService {
                 .phone(client.getPhone())
                 .build())
                 .toList();
+
     }
 
     @Override
@@ -77,11 +78,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean delete(int id) {
-        var clientOpt = clientRepository.findById(id);
-        if (clientOpt.isPresent()) {
-            clientRepository.deleteById(id);
-            return true;
-        }
-        return false;
+        var client = clientRepository.findById(id).orElseThrow(() ->new EntityNotFoundException("client not found"));;
+            clientRepository.delete(client);
+        return true;
     }
 }

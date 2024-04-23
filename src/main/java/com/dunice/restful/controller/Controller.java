@@ -4,6 +4,7 @@ import com.dunice.restful.dto.ClientDto;
 import com.dunice.restful.model.Client;
 import com.dunice.restful.service.ClientService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class Controller {
     }
 
     @GetMapping(value = "/clients/{id}")
-    public ResponseEntity<?> read(@PathVariable @Valid int id) {
+    public ResponseEntity<?> read(@PathVariable @Min(0) int id) {
         final ClientDto clientdto = clientService.read(id);
 
         return clientdto != null
@@ -57,9 +58,7 @@ public class Controller {
     @DeleteMapping(value = "/clients/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
         final boolean deleted = clientService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
 
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
