@@ -6,12 +6,16 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
+
 @Data
 @Builder
 public class PostDto {
     @NotBlank(message = "Field name must be non empty")
     private String title;
     private Integer clientId;
+    private List<String> tags;
 }

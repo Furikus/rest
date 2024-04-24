@@ -12,7 +12,7 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     List<Post> findAllByTitle(String title);
     @Query("select '*' from Post ")
     List<Post> findAll();
-    @Query("select '*' from Post where id = :id ")
+    @Query("select p from Post p where p.id = :id ")
     Optional<Post> findById(Integer id);
 
 }

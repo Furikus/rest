@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client,Integer> {
     List<Client> findAllByEmail(String email);
-    @Query("select '*' from Client ")
+    @Query(value = "SELECT c from Client c")
     List<Client> findAll();
-    @Query("select '*' from Client where id = :id ")
+    @Query("select c from Client c where c.id = :id ")
     Optional<Client> findById(Integer id);
 }
