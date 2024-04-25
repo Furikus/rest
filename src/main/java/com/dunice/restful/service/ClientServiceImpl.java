@@ -1,6 +1,7 @@
 package com.dunice.restful.service;
 
 import com.dunice.restful.dto.ClientDto;
+import com.dunice.restful.mapper.ClientMapper;
 import com.dunice.restful.model.Client;
 
 import com.dunice.restful.repository.ClientRepository;
@@ -13,42 +14,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
-
+    private final ClientMapper clientMapper;
     @Override
     public void create(ClientDto clientdto) {
-        Client client = Client.builder()
-                .name(clientdto.getName())
-                .email(clientdto.getEmail())
-                .phone(clientdto.getPhone())
-                .build();
+        Client client = clientMapper.toEntity(clientdto);
+//        Client client = Client.builder()
+//                .name(clientdto.getName())
+//                .email(clientdto.getEmail())
+//                .phone(clientdto.getPhone())
+//                .build();
         clientRepository.save(client);
     }
 
     @Override
     public List<ClientDto> readAll() {
         return clientRepository.findAll().stream()
-                .map(client -> ClientDto.builder()
-                .name(client.getName())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .build())
-                .toList();
+                .map(client -> clientMapper.toDto(client)).collect(Collectors.toList());
+//                ClientDto.builder()
+//                .name(client.getName())
+//                .email(client.getEmail())
+//                .phone(client.getPhone())
+//                .build())
+//                .toList();
 
     }
 
     @Override
     public ClientDto read(int id) {
         var client = clientRepository.findById(id).orElseThrow(() ->new EntityNotFoundException("client not found"));
-        return ClientDto.builder()
-                .name(client.getName())
-                .email(client.getEmail())
-                .phone(client.getPhone())
-                .build();
+        return  clientMapper.toDto(client);
+        //        return ClientDto.builder()
+//                .name(client.getName())
+//                .email(client.getEmail())
+//                .phone(client.getPhone())
+//                .build();
 //        var OptClient = clientRepository.findById(id);
 //        if (OptClient.isPresent()) {
 //            var client = OptClient.get();

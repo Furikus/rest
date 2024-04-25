@@ -6,16 +6,20 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClientDto {
     @Id
     @Min(0)
-    private int id;
+    private Integer id;
     @NotBlank(message = "Field name must be non empty")
     private String name;
     @NotBlank
