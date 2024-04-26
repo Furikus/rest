@@ -11,9 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,17 +61,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean update(PostDto postDto, int id) {
         var post = postRepository.findById(id).orElse(Post.builder().build());
-
         var tags = postDto.getTags()
                 .stream()
                 .map(tagName -> tagsRepository.findByName(tagName).orElseGet(()-> {
                     var tag = Tags.builder().name(tagName).build();
                     return tagsRepository.save(tag);
                 }))
-                .collect(Collectors.toCollection(ArrayList::new));
-
+                .toList();
         post.setTitle(postDto.getTitle());
-       post.setTags(tags);
+        post.setTags(tags);
         postRepository.save(post);
         return true;
     }

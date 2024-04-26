@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -20,7 +21,7 @@ public class RestExceptionHandler {
     public ResponseEntity<List<String>> HandleException(MethodArgumentNotValidException ex ) {
         return ResponseEntity
                 .badRequest()
-                .body(ex.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).toList());
+                .body(ex.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList()));
     }
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> HandleException(EntityNotFoundException ex){

@@ -26,7 +26,7 @@ public class Post {
     private LocalDateTime updatedAt;
     @ManyToOne
     private Client client;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Tags> tags;
 
 
