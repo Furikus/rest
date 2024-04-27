@@ -2,6 +2,7 @@ package com.dunice.restful.repository;
 
 import com.dunice.restful.model.Client;
 import com.dunice.restful.model.Post;
+import com.dunice.restful.model.Tags;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,5 +15,5 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
     List<Post> findAll();
     @Query("select p from Post p where p.id = :id ")
     Optional<Post> findById(Integer id);
-
+    long countAllByTags(Tags tag);
 }
